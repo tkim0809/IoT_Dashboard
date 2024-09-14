@@ -2,7 +2,7 @@ import React from "react";
 
 const ExpandedView = ({fleetName, onClose}) => {
     return (
-        <div className="p-5" style={{width: "90%", height: "90%", backgroundColor: "lightblue", position: "fixed"}}>
+        <div className="p-5 rounded-lg border-solid border-black border-2 bg-white" style={{width: "90%", height: "90%", position: "fixed"}}>
             <p>
                 {fleetName}
             </p>
