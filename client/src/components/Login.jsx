@@ -3,6 +3,7 @@ import { LoginBg } from "../assets"
 import { LoginInput } from '../components'
 import { motion } from "framer-motion"
 import { buttonClick } from '../animations'
+import { FcGoogle } from 'react-icons/fc'
 
 const Login = () => {
 
@@ -41,7 +42,27 @@ const Login = () => {
 
 
                     {/* button section */}
+                    {isSignUp ? (
+                        <motion.button {...buttonClick} className='w-full px-4 py-2 rounded-md bg-red-400 cursor-pointer text-white text-xl capitalize hover:bg-red-500 transition-all duration-150'>
+                            Sign up
+                        </motion.button>
+                    ) : (
+                        <motion.button {...buttonClick} className='w-full px-4 py-2 rounded-md bg-red-400 cursor-pointer text-white text-xl capitalize hover:bg-red-500 transition-all duration-150'>
+                            Sign in
+                        </motion.button>
+                    )}
                 </div>
+
+                <div className='flex items-center justify-between gap-16'>
+                    <div className='w-24 h-[1px] rounded-md bg-white'></div>
+                    <p className='text=white'>or</p>
+                    <div className='w-24 h-[1px] rounded-md bg-white'></div>
+                </div>
+
+                <motion.div {...buttonClick} className='flex items-center justify-center px-20 py-2 bg-lightOverlay backdrop-blur-md cursor-pointer rounded-3xl gap-4'>
+                    <FcGoogle className="text-3xl" />
+                    <p className='capitalize text-base text-headingColor'>Sign in with Google</p>
+                </motion.div>
             </div>
         </div>
     )
