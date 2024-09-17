@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LoginBg, } from "../assets"
+import { LoginBg, Logo, } from "../assets"
 import { LoginInput } from '../components'
 import { motion } from "framer-motion"
 import { buttonClick } from '../animations'
@@ -23,6 +23,7 @@ const Login = () => {
             <div className='flex flex-col items-center bg-lightOverlay w-[80%] md:w-508 h-full z-10 backdrop-blur-md p-4 px-4 py-12 gap-6'>
                 {/* TODO: top logo section */}
                 <div className='flex items-center justify-start gap-4 w-full'>
+                    <img src={Logo} className="w-8" alt="" />
                     <p className='text-cyan-400 font-semibold text-2xl'>IdeaNova</p>
                 </div>
                 {/* TODO: welcome text */}
