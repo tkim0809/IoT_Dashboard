@@ -31,5 +31,8 @@ app.get("/", (req, res) => {
     return res.send("Hello world");
 });
 
+const userRoute = require('./routes/user')
+app.use("/api/users", userRoute)
+
 // Export using v2 trigger
 exports.app = onRequest(app);
