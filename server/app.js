@@ -1,10 +1,27 @@
 const express = require("express");
+const mysql = require("mysql");
 const app = express();
 
 const cors = require("cors");
 
-app.get("/", (req, res) => {
-    return res.json("Hello..")
-})
+var db = mysql.createConnection({
+    host: "localhost",
+    user: "node"
+});
 
-app.listen(4000, () => console.log("Listening to port 4000"));
+function start() {
+    app.get("/", (req, res) => {
+        return res.json("Hello..")
+    });
+
+    app.get("/logs.json", (req, res) => {
+        return res.json("Foo");
+    });
+
+    app.listen(4000, () => console.log("Listening to port 4000"));
+}
+
+db.connect(err => {
+    if (err) throw err;
+    start();
+})
