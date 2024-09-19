@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import ExpandedView from "./ExpandedView";
 
-const ExpandedAirlines = ({ fleetName, data, onClose }) => {
+const ExpandedAirlines = ({ fleetName, data, expandClose, onClose }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleOpenAircraft = () => {
         console.log("open");
         setIsExpanded(true);
+    }
+
+    const handleClose = () => {
+    setIsExpanded(false);
     }
 
     return (
@@ -42,7 +46,7 @@ const ExpandedAirlines = ({ fleetName, data, onClose }) => {
         {/* Will close the current display of ExpandedAirlines, need to fix where it will close both ExpandedAirlines and ExpandedView */}
         <button className="absolute top-0 right-0 p-5" onClick={onClose}>X</button>
         {/* Display for when you expand on an aircraft */}
-        {isExpanded && <ExpandedView style={{position: "absolute"}} fleetName={fleetName} data={data} onClose={onClose} />}
+        {isExpanded && <ExpandedView style={{position: "absolute"}} fleetName={fleetName} data={data} onClose={handleClose} />}
     </div>
     )
 }

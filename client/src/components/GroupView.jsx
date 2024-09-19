@@ -8,20 +8,29 @@ const GroupView = () => {
     ]
     let airlines = [{name: "Delta", aircrafts: ["123", "124", "125"]}, {name: "United Airlines", aircrafts: ["224", "225"]}]
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isAirlinesExpanded, setAirlinesExpand] = useState(false);
     const [fleetName, setFleetName] = useState("");
     const [sortCategory, setSortCategory] = useState("all");
     const [itemIndex, setItemIndex] = useState(0);
     const [passedData, setPassedData] = useState(null);
 
-    const handleExpand = (name, data) => {
-        setIsExpanded(true);
+    const handleExpand = (type, name, data) => {
+        if (type == "airlines") {
+            setAirlinesExpand(true);
+        }
+        else {
+            setIsExpanded(true);
+        }
         setPassedData(data);
         setFleetName(name)
-        console.log(data);
     }
 
     const handleClose = () => {
         setIsExpanded(false);
+    }
+
+    const handleAirlineClose = () => {
+        setAirlinesExpand(false);
     }
 
     const handleNextPage = () => {
@@ -60,7 +69,7 @@ const GroupView = () => {
                         <tr key={data.name}>
                         <td className="border border-gray-600 px-4 py-2" style={{ width: "75%" }}>{data.name}</td>
                         <td className="border border-gray-600 px-4 py-2 text-center">
-                            <button onClick={() => handleExpand(data.name, data.aircrafts)}>Expand</button>
+                            <button onClick={() => handleExpand("airlines", data.name, data.aircrafts)}>Expand</button>
                         </td>
                         </tr>
                     ))
@@ -75,7 +84,7 @@ const GroupView = () => {
                             {item.fleetName}
                         </td>
                         <td className="border border-gray-600 px-4 py-2 text-center">
-                            <button onClick={() => handleExpand(item.fleetName, "Too be implemented")}>Expand</button>
+                            <button onClick={() => handleExpand("all", item.fleetName, "Too be implemented")}>Expand</button>
                         </td>
                         </tr>
                     ))
@@ -86,10 +95,10 @@ const GroupView = () => {
             {/* Button for pagination */}
             <button onClick={handleNextPage}>Next Page</button>
             {/* Opens display for expansion to view data */}
-            {isExpanded && (
-                sortCategory === "airlines" 
-                    ? <ExpandedAirlines fleetName={fleetName} data={passedData} onClose={handleClose} /> 
-                    : <ExpandedView fleetName={fleetName} data={passedData} onClose={handleClose} />
+            {isAirlinesExpanded 
+                ? <ExpandedAirlines fleetName={fleetName} data={passedData} onClose={handleAirlineClose} />
+                : isExpanded && (
+                    <ExpandedView fleetName={fleetName} data={passedData} onClose={handleClose} />
                 )}
         </div>
     )
