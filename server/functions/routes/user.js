@@ -2,7 +2,7 @@ const router = require('express').Router()
 const admin = require('firebase-admin')
 
 router.get('/', (req, res) => {
-    return res.send("Insind user router")
+    return res.send("Inside user router")
 })
 
 router.get("/jwtVerification", async (req, res) => {
