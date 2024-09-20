@@ -5,8 +5,9 @@ import { motion } from "framer-motion"
 import { buttonClick } from '../animations'
 import { FcGoogle } from 'react-icons/fc'
 import { FaEnvelope, FaLock } from "../assets/icons"
+import { useNavigate } from "react-router-dom"
 
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth"
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { app } from "../config/firebase.config"
 import { validateUserJWTToken } from '../api'
 
@@ -20,6 +21,8 @@ const Login = () => {
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider();
 
+    const navigate = useNavigate()
+
     const loginWithGoogle = async () => {
         await signInWithPopup(firebaseAuth, provider).then(userCred => {
             firebaseAuth.onAuthStateChanged(cred => {
@@ -28,6 +31,7 @@ const Login = () => {
                         validateUserJWTToken(token).then(data => {
                             console.log(data)
                         })
+                        navigate("/", { replace: true })
                     })
                 }
             })
@@ -50,6 +54,7 @@ const Login = () => {
                                 validateUserJWTToken(token).then(data => {
                                     console.log(data)
                                 })
+                                navigate("/", { replace: true })
                             })
                         }
                     })
@@ -58,6 +63,25 @@ const Login = () => {
                 //Alert message
 
             }
+        }
+    }
+
+    const signInWithEmailPass = async () => {
+        if (userEmail !== "" && password !== "") {
+            await signInWithEmailAndPassword(firebaseAuth, userEmail, password).then(userCred => {
+                firebaseAuth.onAuthStateChanged(cred => {
+                    if (cred) {
+                        cred.getIdToken().then(token => {
+                            validateUserJWTToken(token).then(data => {
+                                console.log(data)
+                            })
+                            navigate("/", { replace: true })
+                        })
+                    }
+                })
+            })
+        } else {
+            //Alert message
         }
     }
 
@@ -108,7 +132,8 @@ const Login = () => {
                             Sign Up
                         </motion.button>
                     ) : (
-                        <motion.button {...buttonClick} className='w-full px-4 py-2 rounded-md bg-red-400 cursor-pointer text-white text-xl hover:bg-red-500 transition-all duration-150'>
+                        <motion.button {...buttonClick} className='w-full px-4 py-2 rounded-md bg-red-400 cursor-pointer text-white text-xl hover:bg-red-500 transition-all duration-150'
+                            onClick={signInWithEmailPass}>
                             Sign In
                         </motion.button>
                     )}
