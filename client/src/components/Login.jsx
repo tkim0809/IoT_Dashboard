@@ -11,6 +11,35 @@ const Login = () => {
     const [isSignUp, setIsSignUp] = useState(false)
     const [password, setPassword] = useState("")
     const [confirm_password, setConfirm_password] = useState("")
+    const [email, setEmail] = useState("");
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
+
+    const firebaseAuth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const loginWithGoogle = async () => {
+        await signInWithPopup(firebaseAuth, provider).then(userCred => {
+            firebaseAuth.onAuthStateChanged(cred => {
+                if (cred) {
+                    cred.getIdToken().then(token => {
+                        console.log(token);
+                    });
+                }
+            });
+        });
+    };
+
+    const sendResetPasswordEmail = async () => {
+        try {
+            await firebaseAuth.sendPasswordResetEmail(email);
+            alert('Password reset email sent! Please check your inbox.');
+            setIsForgotPassword(false); // Optionally close the modal or reset state
+        } catch (error) {
+            console.error("Error sending password reset email:", error);
+            alert(error.message); // Alert the user with the error message
+        }
+    };
+    
 
     return (
         <div className='w-screen h-screen relative overflow-hidden flex'>
