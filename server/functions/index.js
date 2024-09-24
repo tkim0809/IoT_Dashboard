@@ -12,6 +12,8 @@ const app = express();
 // Body parser for our JSON data
 app.use(express.json());
 
+const { default: mongoose } = require("mongoose");
+
 // Cross-origin setup
 const cors = require("cors");
 app.use(cors({ origin: true }));
@@ -30,6 +32,11 @@ admin.initializeApp({
 app.get("/", (req, res) => {
     return res.send("Hello world");
 });
+
+mongoose.connect(process.env.DB_STRING, { useNewUrlParser: true })
+mongoose.connection
+    .once("open", () => console.log("Connected"))
+    .on("error", (err) => console.log(err))
 
 const userRoute = require('./routes/user')
 app.use("/api/users", userRoute)
