@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LoginBg, Logo, } from "../assets"
 import { LoginInput } from '../components'
 import { motion } from "framer-motion"
@@ -11,7 +11,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPas
 import { app } from "../config/firebase.config"
 import { validateUserJWTToken } from '../api'
 
-const Login = () => {
+const Login = ({ setAuth }) => {
 
     const [userEmail, setUserEmail] = useState("")
     const [isSignUp, setIsSignUp] = useState(false)
@@ -25,16 +25,26 @@ const Login = () => {
 
     const loginWithGoogle = async () => {
         await signInWithPopup(firebaseAuth, provider).then(userCred => {
-            firebaseAuth.onAuthStateChanged(cred => {
-                if (cred) {
-                    cred.getIdToken().then(token => {
-                        validateUserJWTToken(token).then(data => {
-                            console.log(data)
+            if (userCred) {
+                setAuth(true)
+                window.localStorage.setItem("auth", "true")
+
+                firebaseAuth.onAuthStateChanged(userCred => {
+                    if (userCred) {
+                        userCred.getIdToken().then(token => {
+                            validateUserJWTToken(token).then(data => {
+                                console.log(data)
+                            })
+                            navigate("/", { replace: true })
                         })
-                        navigate("/", { replace: true })
-                    })
+                    } else {
+                        setAuth(false)
+                        navigate("/login")
+                    }
                 }
-            })
+
+                )
+            }
         })
     }
 
@@ -48,16 +58,24 @@ const Login = () => {
                 setConfirm_password("")
                 setPassword("")
                 await createUserWithEmailAndPassword(firebaseAuth, userEmail, password).then(userCred => {
-                    firebaseAuth.onAuthStateChanged(cred => {
-                        if (cred) {
-                            cred.getIdToken().then(token => {
-                                validateUserJWTToken(token).then(data => {
-                                    console.log(data)
+                    if (userCred) {
+                        setAuth(true)
+                        window.localStorage.setItem("auth", "true")
+
+                        firebaseAuth.onAuthStateChanged(cred => {
+                            if (cred) {
+                                cred.getIdToken().then(token => {
+                                    validateUserJWTToken(token).then(data => {
+                                        console.log(data)
+                                    })
+                                    navigate("/", { replace: true })
                                 })
-                                navigate("/", { replace: true })
-                            })
-                        }
-                    })
+                            } else {
+                                setAuth(false)
+                                navigate("/login")
+                            }
+                        })
+                    }
                 })
             } else {
                 //Alert message
@@ -69,21 +87,36 @@ const Login = () => {
     const signInWithEmailPass = async () => {
         if (userEmail !== "" && password !== "") {
             await signInWithEmailAndPassword(firebaseAuth, userEmail, password).then(userCred => {
-                firebaseAuth.onAuthStateChanged(cred => {
-                    if (cred) {
-                        cred.getIdToken().then(token => {
-                            validateUserJWTToken(token).then(data => {
-                                console.log(data)
+                if (userCred) {
+                    setAuth(true)
+                    window.localStorage.setItem("auth", "true")
+
+                    firebaseAuth.onAuthStateChanged(cred => {
+                        if (cred) {
+                            cred.getIdToken().then(token => {
+                                validateUserJWTToken(token).then(data => {
+                                    console.log(data)
+                                })
+                                navigate("/", { replace: true })
                             })
-                            navigate("/", { replace: true })
-                        })
-                    }
-                })
+                        } else {
+                            setAuth(false)
+                            navigate("/login")
+                        }
+                    })
+                }
             })
         } else {
             //Alert message
         }
     }
+
+    useEffect(() => {
+        if (window.localStorage.getItem("auth") === "true") {
+            navigate("/", { replace: true })
+        }
+    }, [navigate])
+
 
     return (
         <div className='w-screen h-screen relative overflow-hidden flex'>
