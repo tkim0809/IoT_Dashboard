@@ -21,6 +21,9 @@ function start() {
     //     return res.json("Foo");
     // });
 
+    const userRoute = require("./routes/user");
+    app.use("/api/users/", userRoute)
+
     mongoose.connect(process.envDB_STRING, { useNewUrlParser: true })
     mongoose.connection
         .once("open", () => console.log("Connected"))

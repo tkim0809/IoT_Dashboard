@@ -5,10 +5,15 @@ import { AnimatePresence } from 'framer-motion'
 import { getAuth } from 'firebase/auth'
 import { app } from './config/firebase.config'
 import { validateUserJWTToken } from '../src/api'
+import { useStateValue } from "./context/StateProvider";
+import { actionType } from './context/reducer'
+// import (useStateValue)
 
 const App = () => {
     const firebaseAuth = getAuth(app)
     const navigate = useNavigate();
+
+    const [{ user }, dispatch] = useStateValue();
 
     const [auth, setAuth] = useState(false || window.localStorage.getItem("auth") === "true")
 
@@ -17,12 +22,19 @@ const App = () => {
             if (cred) {
                 cred.getIdToken().then(token => {
                     validateUserJWTToken(token).then(data => {
-                        console.log(data)
+                        dispatch({
+                            type: actionType.SET_USER,
+                            user: data
+                        })
                     })
                 })
             } else {
                 setAuth(false)
                 window.localStorage.setItem("auth", "false")
+                dispatch({
+                    type: actionType.SET_USER,
+                    user: null,
+                })
                 navigate("/login")
             }
         })

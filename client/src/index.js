@@ -1,19 +1,25 @@
 import React from "react";
-import ReactDOM from "react-dom";
-
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
 import { BrowserRouter as Router } from "react-router-dom";
+import { StateProvider } from "./context/StateProvider";
+import { initialState } from "./context/initialState";
+import reducer from "./context/reducer";
 
-import { AnimatePresence } from "framer-motion";
+// Get the root DOM element
+const container = document.getElementById('root');
 
-ReactDOM.render(
+// Create a root and render the App component
+const root = ReactDOM.createRoot(container);
+
+root.render(
     <React.StrictMode>
         <Router>
-            <AnimatePresence>
+            <StateProvider initialState={initialState} reducer={reducer}>
                 <App />
-            </AnimatePresence>
+            </StateProvider>
         </Router>
     </React.StrictMode>
-    , document.getElementById('root'))
+);

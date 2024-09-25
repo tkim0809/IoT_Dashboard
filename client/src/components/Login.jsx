@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom"
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { app } from "../config/firebase.config"
 import { validateUserJWTToken } from '../api'
+import { useStateValue } from '../context/StateProvider'
+import { actionType } from '../context/reducer'
 
 const Login = ({ setAuth }) => {
 
@@ -20,6 +22,7 @@ const Login = ({ setAuth }) => {
 
     const firebaseAuth = getAuth(app)
     const provider = new GoogleAuthProvider();
+    const [{ user }, dispatch] = useStateValue();
 
     const navigate = useNavigate()
 
@@ -33,12 +36,19 @@ const Login = ({ setAuth }) => {
                     if (userCred) {
                         userCred.getIdToken().then(token => {
                             validateUserJWTToken(token).then(data => {
-                                console.log(data)
+                                dispatch({
+                                    type: actionType.SET_USER,
+                                    user: data
+                                })
                             })
                             navigate("/", { replace: true })
                         })
                     } else {
                         setAuth(false)
+                        dispatch({
+                            type: actionType.SET_USER,
+                            user: null
+                        })
                         navigate("/login")
                     }
                 }
