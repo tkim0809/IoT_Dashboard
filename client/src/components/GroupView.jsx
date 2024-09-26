@@ -43,7 +43,7 @@ const GroupView = () => {
                 <img className="border-solid border-2 border-black" style={{ width: "100px", height: "100px" }} src="" alt="" />
                 <h1 style={{ width: "100%", textAlign: "center" }}>Group name</h1>
             </div>
-            <div id="table_container" className="border-solid border-2 border-black border-opacity-25" style={{borderWidth: "1px", width: "100%", height: "499px", marginTop: "100px", borderRadius: "10px" }}>
+            <div id="table_container" className="border-solid border-2 border-black border-opacity-25" style={{overflow: "hidden", borderWidth: "1px", width: "100%", height: "500px", marginTop: "100px", borderRadius: "10px" }}>
                 {/* Div of buttons that will change what is currently being sorted */}
                 <div className="flex-initial flex-row h-15 py-2" style={{ width: "100%" }}>
                     <button className="w-20" onClick={() => setSortCategory("all")} style={{ color: sortCategory === "all" ? "blue" : "black", borderBottom: sortCategory === "all" ? "solid 2px blue" : "none" }}>All</button>
@@ -54,11 +54,17 @@ const GroupView = () => {
                 </div>
 
                 {/* table of list of fleets, subfleets, aircrafts, and airlines */}
-                <table className="min-w-full" style={{height: "calc(100%-60px)"}}>
+                <table className="min-w-full">
                     <thead style={{backgroundColor: "#86a7b5"}}>
                         <tr>
+                        {sortCategory != "airlines" ? (
+                            <>
                             <th className="border-t border-b border-l border-gray-600 px-4 py-4 border-opacity-25" style={{borderWidth: "1px", textAlign: "left", color: "white"}}>Fleet Name</th>
                             <th className="border-t border-b border-r border-gray-600 px-4 py-4 border-opacity-25" style={{color: "white"}}>Airline</th>
+                            </>
+                          )  : (
+                            <th className="border-t border-b border-l border-gray-600 px-4 py-4 border-opacity-25" style={{borderWidth: "1px", textAlign: "left", color: "white"}}>Airline</th>
+                    )}
                         </tr>
                     </thead>
                     <tbody>
@@ -66,11 +72,11 @@ const GroupView = () => {
                     //Will map over airlines array to display list of airlines if sorted category is currently "airlines".
                     airlines
                     .slice(itemIndex, itemIndex + 5)
-                    .map(data => (
+                    .map((data, index) => (
                         <tr className="px-4 py-2 cursor-pointer" 
                         key={data.name} 
                         onClick={() => handleExpand("airlines", data.name, data.aircrafts)}>
-                        <td style={{ width: "100%" }}>
+                        <td className="h-20 border-opacity-25 border-t" style={{ borderRight: "none", width: "80%", padding: "10px", borderWidth: "1px", backgroundColor: index % 2 === 0 ? "white" : "#ecf2f3" }}>
                             {data.name}
                         </td>
                         </tr>
@@ -81,7 +87,7 @@ const GroupView = () => {
                     .filter(item => sortCategory === "all" || item.fleetCategory === sortCategory)
                     .slice(itemIndex, itemIndex + 5)
                     .map((item, index) => (
-                    <tr className="cursor-pointer" style={{height: "20%"}}
+                    <tr className=" px-4 py-2 cursor-pointer" style={{height: "20%"}}
                         key={item.fleetName} 
                         onClick={() => handleExpand("all", item.fleetName, "To be implemented")}>
                         <td className="h-20 border-opacity-25 border-t" style={{ borderRight: "none", width: "80%", padding: "10px", borderWidth: "1px", backgroundColor: index % 2 === 0 ? "white" : "#ecf2f3" }}>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ExpandedView from "./ExpandedView";
 
-const ExpandedAirlines = ({ fleetName, data, expandClose, onClose }) => {
+const ExpandedAirlines = ({ fleetName, data, onClose }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleOpenAircraft = () => {
@@ -21,7 +21,8 @@ const ExpandedAirlines = ({ fleetName, data, expandClose, onClose }) => {
 
         {/* If array is not empty it will display a table list of the aircrafts*/}
         {Array.isArray(data) ? (
-        <table className="min-w-full min-h-20 border border-collapse h-3/5">
+        <div id="table_container" className="border-solid border-2 border-black border-opacity-25" style={{overflow: "hidden", borderWidth: "1px", width: "100%", height: "500px", marginTop: "100px", borderRadius: "10px" }}>
+        <table className="min-w-full">
             <thead>
             <tr>
                 <th className="border border-gray-600 px-4 py-2">
@@ -39,6 +40,7 @@ const ExpandedAirlines = ({ fleetName, data, expandClose, onClose }) => {
             </tbody>
             ))}
         </table>
+        </div>
         ) 
         : (
         <div>No Data</div>

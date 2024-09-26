@@ -1,0 +1,13 @@
+.table_header {
+    border-width: 1px;
+    text-align: left;
+    color: white;
+  }
+
+.table_d {
+    border-right: "none";
+    width: "80%";
+    padding: "10px";
+    border-width: "1px";
+}
+  
