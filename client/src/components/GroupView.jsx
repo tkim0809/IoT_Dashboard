@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ExpandedView from "./ExpandedView";
 import ExpandedAirlines from "./ExpandedAirlines";
+import BasicTable from "./groupTable";
 
 const GroupView = () => {
     let data = [{ fleetName: "Fleet 1", fleetCategory: "fleet" }, { fleetName: "Fleet 2", fleetCategory: "subfleet" }, { fleetName: "Fleet 3", fleetCategory: "aircraft" },
@@ -33,16 +34,13 @@ const GroupView = () => {
         setAirlinesExpand(false);
     }
 
-    const handleNextPage = () => {
-        setItemIndex(itemIndex + 5);
-    }
-
     return (
         <div id="groupview_container" className="bg-white w-screen h-screen flex flex-wrap p-10" style={{ justifyContent: "center", overflowX: "hidden" }}>
             <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
                 <img className="border-solid border-2 border-black" style={{ width: "100px", height: "100px" }} src="" alt="" />
                 <h1 style={{ width: "100%", textAlign: "center" }}>Group name</h1>
             </div>
+            <BasicTable data={data} sortCategory={sortCategory}/>
             <div id="table_container" className="border-solid border-2 border-black border-opacity-25" style={{overflow: "hidden", borderWidth: "1px", width: "100%", height: "500px", marginTop: "100px", borderRadius: "10px" }}>
                 {/* Div of buttons that will change what is currently being sorted */}
                 <div className="flex-initial flex-row h-15 py-2" style={{ width: "100%" }}>
