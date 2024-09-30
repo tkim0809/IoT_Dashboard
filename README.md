@@ -1,5 +1,3 @@
-# grp_7_iot
-
 
 
 ## Getting started
