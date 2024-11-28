@@ -55,7 +55,7 @@ yarn start
 ## Authors and acknowledgment
 - Chandler Sihom: Frontend
 - Phuong Nguyen: Backend
-- Taewan Kim: Frontend
+- Taewan Kim: Frontend, Backend
 - Nick Leppik: Backend
 - Kim Sang Huynh: Backend
 
